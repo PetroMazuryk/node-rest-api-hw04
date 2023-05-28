@@ -18,6 +18,7 @@ const userSchema = new Schema(
       type: String,
       match: emailRegexp,
       required: [true, "Email is required"],
+      unique: true,
     },
   },
   { versionKey: false, timestamps: true }
