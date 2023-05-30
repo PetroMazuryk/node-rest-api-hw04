@@ -32,11 +32,14 @@ const login = async (req, res) => {
     throw HttpError(401, "Email or password is wrong");
   }
 
+  const { _id: id } = user;
+
   const payload = {
-    id: user._id,
+    id,
   };
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+  await User.findByIdAndUpdate(id, { token });
   res.json({
     token,
   });
@@ -50,8 +53,19 @@ const getCurrent = async (req, res) => {
     name,
   });
 };
+
+const logout = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { token: "" });
+
+  res.json({
+    message: "Logout success",
+  });
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
+  logout: ctrlWrapper(logout),
 };
