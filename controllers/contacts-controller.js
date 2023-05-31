@@ -38,7 +38,7 @@ const deleteContactById = async (req, res, next) => {
   }
 
   res.json({
-    message: "Delete success",
+    message: "Contact deleted success",
   });
 };
 
@@ -55,7 +55,7 @@ const updateFavorite = async (req, res) => {
   const { id } = req.params;
   const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
   if (!result) {
-    throw HttpError(404, "Not found");
+    throw HttpError(404, `${id} not found`);
   }
   res.json(result);
 };
