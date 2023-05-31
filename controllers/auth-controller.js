@@ -18,6 +18,7 @@ const register = async (req, res) => {
   res.status(201).json({
     name: newUser.name,
     email: newUser.email,
+    subscription: newUser.subscription,
   });
 };
 
@@ -42,15 +43,20 @@ const login = async (req, res) => {
   await User.findByIdAndUpdate(id, { token });
   res.json({
     token,
+    user: {
+      email: user.email,
+      subscription: user.subscription,
+    },
   });
 };
 
 const getCurrent = async (req, res) => {
-  const { email, name } = req.user;
+  const { email, name, subscription } = req.user;
 
   res.json({
-    email,
     name,
+    email,
+    subscription,
   });
 };
 
